@@ -2585,12 +2585,12 @@ GameObject:
   - component: {fileID: 4200937503595224219}
   - component: {fileID: 3811718039157974291}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: FrankCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6363779832093207886
 Transform:
   m_ObjectHideFlags: 0

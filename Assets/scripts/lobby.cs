@@ -61,7 +61,7 @@ public class lobby : NetworkBehaviour
     {
         if (IsServer)
         {
-            if (NetworkManager.Singleton.ConnectedClients.Count == 1)
+            if (NetworkManager.Singleton.ConnectedClients.Count == 3)
             {
                 NetworkManager.SceneManager.LoadScene("world", LoadSceneMode.Single);
             }

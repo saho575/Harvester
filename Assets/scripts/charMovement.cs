@@ -1,71 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using Unity.Netcode;
 using UnityEngine;
 
-public class charMovement : NetworkBehaviour
+public class CharMovement : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    #region MOVEMENT ÝÇÝN
-    private CharacterController controller;
     public float speed = 12f;
     private float gravity = -9.81f;
-    Vector3 velocity;
-    private float jumpHeigt = 3f;
+    private Vector3 velocity;
+    private float jumpHeight = 3f;
     public Transform groundCheck;
     private float groundDistance = 0.4f;
     public LayerMask groundLayerMask;
-    public bool isgrounded;
-    #endregion
-
+    private bool isGrounded;
+    private Animator animator;
     public Camera cam;
-    private float mouseSensivity = 150;
-    float xRotation = 0;
+    private float mouseSensitivity = 150f;
+    private float xRotation = 0f;
+    private Rigidbody rb;
+
     void Start()
     {
-        
+        animator = GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
-        controller =GetComponent<CharacterController>();
-        if (IsOwner)
-        {
-            cam.gameObject.SetActive(true);
-
-        }
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        if (IsOwner)  cam.gameObject.SetActive(true);
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (!IsOwner) return;
-        move();
-        look();
+        Move();
+        Look();
     }
-    
 
-    private void move()
+    private void Move()
     {
-        isgrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayerMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundLayerMask);
 
-        if (isgrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        animator.SetFloat("run", z);
+        Vector3 move = transform.right * x + transform.forward * z;
 
-        Vector3 Move = transform.right * x + transform.forward * z;
+        rb.MovePosition(rb.position + move * speed * Time.fixedDeltaTime);
 
-        controller.Move(Move * speed * Time.deltaTime);
+        velocity.y += gravity * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + velocity * Time.fixedDeltaTime);
 
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-
-        if (Input.GetKeyDown("space") && isgrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            velocity.y = Mathf.Sqrt(jumpHeigt * -2f * gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
-        if (Input.GetKey(KeyCode.LeftShift) && isgrounded)
+        if (Input.GetKey(KeyCode.LeftShift) )
         {
             speed = 20;
         }
@@ -75,13 +68,13 @@ public class charMovement : NetworkBehaviour
         }
     }
 
-    private void look()
+    private void Look()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90, 90);
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         transform.Rotate(Vector3.up * mouseX);
