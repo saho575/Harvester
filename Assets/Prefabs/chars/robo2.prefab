@@ -297,6 +297,7 @@ GameObject:
   - component: {fileID: 1670177231010820001}
   - component: {fileID: 5171904586156308814}
   - component: {fileID: 5481472050650563213}
+  - component: {fileID: -4445718548446085917}
   m_Layer: 0
   m_Name: robo2
   m_TagString: Untagged
@@ -443,6 +444,20 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &-4445718548446085917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3912964114273432838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ecbe839eec5a04c8435714729991d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 5171904586156308814}
 --- !u!1 &4015763329587156771
 GameObject:
   m_ObjectHideFlags: 0
